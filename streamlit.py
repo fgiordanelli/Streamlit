@@ -8,6 +8,7 @@ st.set_page_config(layout="wide")
 pd.set_option('display.max_colwidth',1000)
 pd.set_option('display.max_rows',10000)
 
+
 def regex(quero=[], nao_quero=[],quero_completo = [], nao_quero_completo = []):
     guardar1 = []
     guardar2 = []
@@ -79,16 +80,18 @@ if st.sidebar.button("Atualizar!"):
 
     st.table(st.session_state.df[st.session_state.df['desc_prodt'].apply(lambda x: len(re.findall(rf"(?mi)^{regex(quero = user_input.split(' '),nao_quero = user_input2.split(' '))}.*",str(x))) > 0) & st.session_state.df['predito_linha'].isin(user_input3)].head(10000))
 
-st.sidebar.header('Fazer Download')       
+    st.session_state.df.to_csv('/home/logcomex/Imagens/df3.csv')
 
-if st.sidebar.button("Download!"):
-    def get_table_download_link_csv(df):
-        st.session_state.df[['dsc_linha', 'dsc_familia','dsc_subfamilia']] = st.session_state.df['predito_linha'].str.split('&&&', 2, expand=True)
-        csv = st.session_state.df.to_csv().encode()
-        b64 = base64.b64encode(csv).decode()
-        href = f'<a href="data:file/csv;base64,{b64}" download="captura.csv" target="_blank">Download csv file</a>'
-        return href
+#st.sidebar.header('Fazer Download')       
 
-    st.sidebar.markdown(get_table_download_link_csv(st.session_state.df), unsafe_allow_html=True)
+#if st.sidebar.button("Download!"):
+#    def get_table_download_link_csv(df):
+#        st.session_state.df[['dsc_linha', 'dsc_familia','dsc_subfamilia']] = st.session_state.df['predito_linha'].str.split('&&&', 2, expand=True)
+#        csv = st.session_state.df.to_csv().encode()
+#        b64 = base64.b64encode(csv).decode()
+#        href = f'<a href="data:file/csv;base64,{b64}" download="captura.csv" target="_blank">Download csv file</a>'
+#        return href
+
+#    st.sidebar.markdown(get_table_download_link_csv(st.session_state.df), unsafe_allow_html=True)
 
         
